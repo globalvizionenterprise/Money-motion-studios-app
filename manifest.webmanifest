@@ -1,0 +1,25 @@
+{
+  "name": "MONEY MOTION STUDIOS",
+  "short_name": "Money Motion",
+  "description": "Book studio time, pay the booking fee, and step into the live room. KEYZ - Money Motion Engineer, Brooklyn.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
