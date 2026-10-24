@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Money Motion">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLOBAL VIZION — Websites & Apps by KEYZ</title>
+<meta name="description" content="GLOBAL VIZION: websites and apps built for you by KEYZ. Websites & apps from $500. Promo, posters & flyers from $250. You pay for the service - the tech is handled.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html">Live Room</a>
+      <a href="gallery.html">Photos</a>
+      <a href="global.html" class="active">Global Vizion</a>
+      <a href="book.html">Book a Session</a>
+      <a href="dashboard.html">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1 class="chrome">GLOBAL VIZION</h1>
+    <p class="tagline">Websites &amp; Apps, Built For You</p>
+    <p><strong>KEYZ</strong> — Website Developer &amp; App Developer</p>
+    <p class="muted">You just pay for the service. You never touch the tech — your app and website get built, launched, and run for you.</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="#start">Start Your Project</a>
+      <a class="btn" href="tel:+17189088466">Call 718-908-8466</a>
+    </div>
+  </section>
+
+  <h2 class="section-title">Services &amp; Prices</h2>
+  <div class="info-grid">
+    <div class="card"><p><span>Website</span>Your own website — your name, your brand, your prices. <strong>From $500</strong></p></div>
+    <div class="card"><p><span>App</span>An installable app like this one — bookings, payments, your photos, your link. <strong>From $500</strong></p></div>
+    <div class="card"><p><span>Promo</span>Posters, flyers &amp; promo content. <strong>From $250–$500 and up</strong>, depending on the plan.</p></div>
+  </div>
+
+  <h2 class="section-title">Basic or Exclusive</h2>
+  <div class="info-grid">
+    <div class="card"><p><span>Basic</span>Core build: your pages, your info, your booking/contact links. Clean and ready to share.</p></div>
+    <div class="card"><p><span>Exclusive</span>Full custom build: extra pages, custom design, more features, priority handling.</p></div>
+  </div>
+  <div class="note-strip">Your fee is set once we see your full details — Basic or Exclusive — and confirmed with you before any work starts.</div>
+
+  <h2 class="section-title">What You Must Send</h2>
+  <div class="card">
+    <p>Every project starts with your complete information. No partial details — the fee depends on the full picture.</p>
+    <ul>
+      <li><strong>Your email address</strong></li>
+      <li><strong>For flyers &amp; posters:</strong> the event <strong>date and time</strong>, venue, and every name and word exactly as it should appear</li>
+      <li><strong>Clean, clear pictures</strong> — no blurry photos, no screenshots</li>
+      <li><strong>All your assets:</strong> logo, photos, your prices, your payment handles (Cash App / Venmo / Chime)</li>
+      <li><strong>Every detail up front</strong> — what the app or site must do, page by page</li>
+    </ul>
+  </div>
+
+  <h2 class="section-title" id="start">Start Your Project</h2>
+  <div class="card">
+    <p>Fill this in and it opens WhatsApp with your details ready to send to KEYZ.</p>
+    <form id="gv-form">
+      <label>Your name<input id="gv-name" required></label>
+      <label>Your email address<input id="gv-email" type="email" required></label>
+      <label>What do you need?
+        <select id="gv-service">
+          <option>Website — from $500</option>
+          <option>App — from $500</option>
+          <option>Promo / poster / flyer — from $250</option>
+          <option>Website + App + Promo</option>
+        </select>
+      </label>
+      <label>Plan<select id="gv-plan"><option>Not sure yet — set my fee</option><option>Basic</option><option>Exclusive</option></select></label>
+      <label>Event date &amp; time (flyers/posters only)<input id="gv-when"></label>
+      <label>All your details<textarea id="gv-details" rows="4" placeholder="Your business, your prices, your pages, everything the build needs"></textarea></label>
+      <button class="btn btn-gold" type="submit">Send via WhatsApp</button>
+    </form>
+    <p class="muted">Or call/text: <a href="tel:+17189088466">718-908-8466</a> · <a href="tel:+17184156422">718-415-6422</a> · Instagram: <a href="https://www.instagram.com/keyzondabeatz37" target="_blank" rel="noopener">@keyzondabeatz37</a></p>
+  </div>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script>
+document.getElementById("gv-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var lines = [
+    "GLOBAL VIZION - New Project",
+    "Name: " + document.getElementById("gv-name").value,
+    "Email: " + document.getElementById("gv-email").value,
+    "Need: " + document.getElementById("gv-service").value,
+    "Plan: " + document.getElementById("gv-plan").value,
+    "Event date/time: " + (document.getElementById("gv-when").value || "n/a"),
+    "Details: " + document.getElementById("gv-details").value
+  ];
+  window.open("https://wa.me/17189088466?text=" + encodeURIComponent(lines.join("\n")), "_blank");
+});
+</script>
+</body>
+</html>

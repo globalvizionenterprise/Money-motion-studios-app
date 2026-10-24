@@ -1,7 +1,7 @@
 // MONEY MOTION STUDIOS - service worker (offline shell)
-const CACHE = "money-motion-v2";
+const CACHE = "money-motion-v3";
 const SHELL = [
-  "./", "./index.html", "./gallery.html", "./book.html", "./pay.html", "./live.html", "./dashboard.html",
+  "./", "./index.html", "./gallery.html", "./global.html", "./book.html", "./pay.html", "./live.html", "./dashboard.html",
   "./css/style.css", "./js/config.js", "./js/store.js", "./js/logo-data.js", "./js/pwa.js",
   "./manifest.webmanifest", "./icon.svg"
 ];
