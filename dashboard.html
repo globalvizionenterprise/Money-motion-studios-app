@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Owner Dashboard — MONEY MOTION STUDIOS</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html">Live Room</a>
+      <a href="book.html">Book a Session</a>
+      <a href="dashboard.html" class="active">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1 class="chrome center" style="font-size:34px;">Owner Dashboard</h1>
+
+  <!-- Login gate -->
+  <form class="form-card" id="login-form">
+    <h3 style="margin-top:0;">Owner sign in</h3>
+    <div id="login-email-zone">
+      <label for="login-email">Email</label>
+      <input id="login-email" type="email" autocomplete="username">
+    </div>
+    <label for="login-password">Password</label>
+    <input id="login-password" type="password" autocomplete="current-password">
+    <p class="form-error" id="login-error"></p>
+    <button class="btn btn-gold" type="submit" style="width:100%;">Sign In</button>
+    <p class="hint center" id="login-hint"></p>
+  </form>
+
+  <!-- Dashboard -->
+  <div id="dash" class="hidden">
+    <div class="center" style="margin-bottom:8px;">
+      <button class="btn btn-ghost btn-small" id="signout-btn" type="button">Sign Out</button>
+      <button class="btn btn-ghost btn-small" id="refresh-btn" type="button">Refresh Bookings</button>
+    </div>
+
+    <h2 class="section-title">Bookings</h2>
+    <div id="bookings-list" class="cards" style="grid-template-columns:1fr;">
+      <p class="hint">Loading…</p>
+    </div>
+
+    <h2 class="section-title">Settings</h2>
+    <form class="form-card" id="settings-form" style="max-width:none;">
+      <label for="s-cashapp">Cash App handle</label>
+      <input id="s-cashapp" type="text">
+
+      <label for="s-venmo">Venmo pay link</label>
+      <input id="s-venmo" type="url">
+
+      <label for="s-chime">Chime handle</label>
+      <input id="s-chime" type="text">
+
+      <label for="s-playback">Live playback URL (HLS .m3u8 — Livepeer / Mux)</label>
+      <input id="s-playback" type="url" placeholder="https://…/….m3u8">
+
+      <div class="switch-row">
+        <input type="checkbox" id="s-live">
+        <label for="s-live" style="margin:0;">Live Room is ON AIR</label>
+      </div>
+
+      <p class="form-error" id="settings-error"></p>
+      <button class="btn btn-gold" type="submit">Save Settings</button>
+      <span class="hint" id="settings-saved"></span>
+      <p class="hint">Stream key note: your stream key lives in your streaming provider (Livepeer Studio / Mux) — start the stream there or in OBS, paste the playback URL above, and flip the room on. The Go Live controls also appear on the Live Room page while you're signed in.</p>
+    </form>
+  </div>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/logo-data.js"></script>
+<script>
+MMStore.showDemoNotice();
+
+const loginForm = document.getElementById("login-form");
+const dash = document.getElementById("dash");
+
+// In demo mode there's no email account — password only.
+if (MMStore.DEMO) {
+  document.getElementById("login-email-zone").classList.add("hidden");
+  document.getElementById("login-hint").textContent =
+    "Demo mode: use the demo owner password from js/config.js (default \"moneymotion\" — change it there). Once Supabase is connected, sign in with your Supabase Auth email + password.";
+}
+
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function pillClass(status) {
+  if (status === "Confirmed" || status === "Completed") return "ok";
+  if (status === "Cancelled") return "bad";
+  if (status.indexOf("Payment sent") === 0) return "sent";
+  return "pending";
+}
+function fmtWhen(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) +
+         " " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+
+async function renderBookings() {
+  const list = document.getElementById("bookings-list");
+  try {
+    const bookings = await MMStore.listBookings();
+    if (!bookings.length) {
+      list.innerHTML = '<div class="card"><p>No bookings yet. New bookings from the <a href="book.html">booking page</a> land here.</p></div>';
+      return;
+    }
+    list.innerHTML = "";
+    bookings.forEach(function (b) {
+      const card = document.createElement("div");
+      card.className = "card booking-row";
+      card.innerHTML =
+        '<div><strong>' + esc(b.booking_number) + '</strong> — ' + esc(b.name) +
+        ' <span class="status-pill ' + pillClass(b.status) + '">' + esc(b.status) + '</span></div>' +
+        '<div class="meta">' + esc(b.service) + ' · $' + esc(b.price) + ' total · $' + esc(b.fee_due) + ' fee' +
+        '<br>Session: ' + fmtWhen(b.starts_at) +
+        '<br>' + esc(b.phone) + (b.email ? ' · ' + esc(b.email) : '') +
+        (b.notes ? '<br>Notes: ' + esc(b.notes) : '') +
+        '<br>Booked: ' + fmtWhen(b.created_at) + '</div>' +
+        '<div class="booking-actions">' +
+          '<button class="btn btn-gold btn-small" data-act="Confirmed">Confirm Payment</button>' +
+          '<button class="btn btn-ghost btn-small" data-act="Completed">Mark Completed</button>' +
+          '<button class="btn btn-danger btn-small" data-act="Cancelled">Cancel</button>' +
+        '</div>';
+      card.querySelectorAll("button[data-act]").forEach(function (btn) {
+        btn.addEventListener("click", async function () {
+          btn.disabled = true;
+          try {
+            await MMStore.setBookingStatus(b, btn.dataset.act);
+            renderBookings();
+          } catch (e) {
+            btn.disabled = false;
+            alert("Couldn't update that booking — try Refresh.");
+          }
+        });
+      });
+      list.appendChild(card);
+    });
+  } catch (e) {
+    list.innerHTML = '<div class="card"><p>Couldn\'t load bookings. In live mode this usually means your Supabase user needs access — check the RLS policies in supabase-schema.sql.</p></div>';
+  }
+}
+
+async function renderSettings() {
+  const s = await MMStore.getSettings();
+  document.getElementById("s-cashapp").value = s.cashapp_handle || "";
+  document.getElementById("s-venmo").value = s.venmo_link || "";
+  document.getElementById("s-chime").value = s.chime_handle || "";
+  document.getElementById("s-playback").value = s.playback_url || "";
+  document.getElementById("s-live").checked = s.live_on === "true";
+}
+
+async function showDash() {
+  loginForm.classList.add("hidden");
+  dash.classList.remove("hidden");
+  await renderBookings();
+  await renderSettings();
+}
+
+loginForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const err = document.getElementById("login-error");
+  err.textContent = "";
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
+  try {
+    const ok = await MMStore.ownerSignIn(email, password);
+    if (!ok) { err.textContent = "Wrong password."; return; }
+    showDash();
+  } catch (ex) {
+    err.textContent = "Sign-in failed: " + (ex.message || "check your email and password.");
+  }
+});
+
+document.getElementById("signout-btn").addEventListener("click", async function () {
+  await MMStore.ownerSignOut();
+  window.location.reload();
+});
+document.getElementById("refresh-btn").addEventListener("click", renderBookings);
+
+document.getElementById("settings-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const err = document.getElementById("settings-error");
+  err.textContent = "";
+  const patch = {
+    cashapp_handle: document.getElementById("s-cashapp").value.trim(),
+    venmo_link: document.getElementById("s-venmo").value.trim(),
+    chime_handle: document.getElementById("s-chime").value.trim(),
+    playback_url: document.getElementById("s-playback").value.trim(),
+    live_on: document.getElementById("s-live").checked ? "true" : "false"
+  };
+  try {
+    await MMStore.saveSettings(patch);
+    document.getElementById("settings-saved").textContent = "Saved ✓";
+  } catch (ex) {
+    err.textContent = "Save failed: " + (ex.message || "try again.");
+  }
+});
+
+// If already signed in (e.g. returning to the page), skip the gate.
+MMStore.ownerSignedIn().then(function (yes) { if (yes) showDash(); });
+</script>
+</body>
+</html>

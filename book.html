@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a Session — MONEY MOTION STUDIOS</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html">Live Room</a>
+      <a href="book.html" class="active">Book a Session</a>
+      <a href="dashboard.html">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1 class="chrome center" style="font-size:34px;">Book a Session</h1>
+  <p class="center hint">A $50 booking fee is due to lock your session in — you'll get the payment options on the next screen.<br>
+  Reminder: bring a consolidated WAV session.</p>
+
+  <form class="form-card" id="book-form" novalidate>
+    <label for="f-name">Your name *</label>
+    <input id="f-name" name="name" type="text" autocomplete="name" required>
+
+    <label for="f-phone">Phone *</label>
+    <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+
+    <label for="f-email">Email</label>
+    <input id="f-email" name="email" type="email" autocomplete="email">
+
+    <label for="f-service">Service *</label>
+    <select id="f-service" name="service" required></select>
+
+    <div class="form-row">
+      <div>
+        <label for="f-date">Date *</label>
+        <input id="f-date" name="date" type="date" required>
+      </div>
+      <div>
+        <label for="f-time">Start time *</label>
+        <input id="f-time" name="time" type="time" required>
+      </div>
+    </div>
+
+    <label for="f-notes">Notes</label>
+    <textarea id="f-notes" name="notes" rows="3" placeholder="Anything we should know — number of songs, engineer requests, etc."></textarea>
+
+    <p class="form-error" id="form-error"></p>
+    <button class="btn btn-gold" type="submit" id="submit-btn" style="width:100%;">Continue to Payment</button>
+    <p class="hint center">Questions? Call <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a></p>
+  </form>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/logo-data.js"></script>
+<script>
+MMStore.showDemoNotice();
+
+// Populate the service select from the rate card in config.js.
+(function () {
+  const sel = document.getElementById("f-service");
+  MM_CONFIG.SERVICES.forEach(function (s) {
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = s.name + " — $" + s.price + (s.blurb ? " (" + s.blurb + ")" : "");
+    opt.dataset.price = s.price;
+    opt.dataset.name = s.name;
+    sel.appendChild(opt);
+  });
+})();
+
+document.getElementById("book-form").addEventListener("submit", async function (ev) {
+  ev.preventDefault();
+  const err = document.getElementById("form-error");
+  const btn = document.getElementById("submit-btn");
+  err.textContent = "";
+
+  const name = document.getElementById("f-name").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  const email = document.getElementById("f-email").value.trim();
+  const sel = document.getElementById("f-service");
+  const svc = sel.options[sel.selectedIndex];
+  const date = document.getElementById("f-date").value;
+  const time = document.getElementById("f-time").value;
+  const notes = document.getElementById("f-notes").value.trim();
+
+  if (!name || !phone || !date || !time) {
+    err.textContent = "Please fill in your name, phone, date and start time.";
+    return;
+  }
+
+  const startsAt = new Date(date + "T" + time).toISOString();
+  btn.disabled = true;
+  btn.textContent = "Saving your booking…";
+  try {
+    const booking = await MMStore.createBooking({
+      name: name,
+      phone: phone,
+      email: email || null,
+      service: svc.dataset.name,
+      price: parseInt(svc.dataset.price, 10),
+      fee_due: MM_CONFIG.BOOKING_FEE,
+      starts_at: startsAt,
+      notes: notes || null
+    });
+    window.location.href = "pay.html?n=" + encodeURIComponent(booking.booking_number);
+  } catch (e) {
+    err.textContent = "Something went wrong saving the booking. Please call 718-908-8466 to book.";
+    btn.disabled = false;
+    btn.textContent = "Continue to Payment";
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Room — MONEY MOTION STUDIOS</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html" class="active">Live Room</a>
+      <a href="book.html">Book a Session</a>
+      <a href="dashboard.html">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1 class="chrome center" style="font-size:34px;">The Live Room</h1>
+  <p class="center hint">Live sessions, beat-making and mix breakdowns from MONEY MOTION STUDIOS, Brooklyn — with KEYZ, Money Motion Engineer.</p>
+
+  <div class="live-grid">
+    <div>
+      <div class="video-box" id="video-box">
+        <div class="offair" id="offair-state">
+          <div class="big">OFF AIR</div>
+          <p>The studio isn't live right now.<br>Follow <a href="https://www.instagram.com/keyzondabeatz37" target="_blank" rel="noopener">@keyzondabeatz37</a> and the studio page <a href="https://www.instagram.com/moneymotionstudiosnyc" target="_blank" rel="noopener">@moneymotionstudiosnyc</a> for go-live announcements — or <a href="book.html">book a session</a>.</p>
+        </div>
+        <div class="hidden" id="live-nofeed">
+          <span class="live-badge">● LIVE</span>
+          <p class="hint" style="margin-top:10px;">We're live — the video feed is connecting…<br>If it doesn't start, the stream key/playback URL may not be set yet (owner: see the Go Live panel / dashboard settings).</p>
+        </div>
+        <video id="player" class="hidden" controls playsinline></video>
+      </div>
+
+      <!-- Owner Go Live panel — visible only after owner login -->
+      <div class="form-card hidden" id="golive-panel" style="margin-top:14px; max-width:none;">
+        <h3 style="margin-top:0;">Owner — Go Live</h3>
+        <p class="hint">Start your stream in your streaming app (Livepeer Studio / Mux / OBS) using your stream key, paste the HLS playback URL (.m3u8) here, flip Live on, and Save. Viewers see the video above and can chat.</p>
+        <label for="g-playback">HLS playback URL</label>
+        <input id="g-playback" type="url" placeholder="https://…/….m3u8">
+        <div class="switch-row">
+          <input type="checkbox" id="g-live">
+          <label for="g-live" style="margin:0;">Live — room is broadcasting</label>
+        </div>
+        <button class="btn btn-gold btn-small" id="g-save" type="button">Save broadcast settings</button>
+        <span class="hint" id="g-saved"></span>
+      </div>
+      <p class="hint" id="owner-hint">Studio owner? <a href="dashboard.html">Sign in</a> to get the Go Live controls here.</p>
+    </div>
+
+    <div class="chat-box">
+      <div style="padding:10px 12px; border-bottom:1px solid var(--line); font-weight:800;">Live Chat</div>
+      <div id="chat-name-zone" style="padding:10px 12px; border-bottom:1px solid var(--line);">
+        <div class="copy-row">
+          <input id="chat-name" type="text" placeholder="Your name" style="flex:1;">
+          <button class="btn btn-gold btn-small" id="chat-join" type="button">Join</button>
+        </div>
+      </div>
+      <div class="chat-log" id="chat-log">
+        <p class="hint">Join the chat to talk to the room.</p>
+      </div>
+      <form class="chat-form" id="chat-form">
+        <input id="chat-input" type="text" placeholder="Say something…" maxlength="500" disabled>
+        <button class="btn btn-gold btn-small" type="submit" id="chat-send" disabled>Send</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/logo-data.js"></script>
+<script>
+MMStore.showDemoNotice();
+
+const ROOM = "live";
+let settings = null;
+let hls = null;
+
+// ---------- video state ----------
+function renderVideo() {
+  if (!settings) return;
+  const live = settings.live_on === "true";
+  const url = (settings.playback_url || "").trim();
+  const off = document.getElementById("offair-state");
+  const nofeed = document.getElementById("live-nofeed");
+  const video = document.getElementById("player");
+
+  off.classList.toggle("hidden", live);
+  nofeed.classList.toggle("hidden", !(live && !url));
+  video.classList.toggle("hidden", !(live && url));
+
+  if (live && url) {
+    if (video.dataset.src !== url) {
+      video.dataset.src = url;
+      if (window.Hls && Hls.isSupported()) {
+        if (hls) hls.destroy();
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = url; // Safari native HLS
+      }
+    }
+  } else if (hls) {
+    hls.destroy(); hls = null;
+    video.removeAttribute("src"); video.dataset.src = "";
+  }
+}
+
+async function loadSettings() {
+  settings = await MMStore.getSettings();
+  renderVideo();
+  const signedIn = await MMStore.ownerSignedIn();
+  if (signedIn) {
+    document.getElementById("golive-panel").classList.remove("hidden");
+    document.getElementById("owner-hint").classList.add("hidden");
+    document.getElementById("g-playback").value = settings.playback_url || "";
+    document.getElementById("g-live").checked = settings.live_on === "true";
+  }
+}
+MMStore.subscribeSettings(loadSettings);
+loadSettings();
+
+document.getElementById("g-save").addEventListener("click", async function () {
+  const patch = {
+    playback_url: document.getElementById("g-playback").value.trim(),
+    live_on: document.getElementById("g-live").checked ? "true" : "false"
+  };
+  try {
+    await MMStore.saveSettings(patch);
+    settings = Object.assign({}, settings, patch);
+    renderVideo();
+    document.getElementById("g-saved").textContent = "Saved ✓";
+  } catch (e) {
+    document.getElementById("g-saved").textContent = "Save failed — try again.";
+  }
+});
+
+// ---------- chat ----------
+let chatName = localStorage.getItem("mm_chat_name") || "";
+const log = document.getElementById("chat-log");
+const input = document.getElementById("chat-input");
+const sendBtn = document.getElementById("chat-send");
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function renderChat(messages) {
+  if (!messages.length) {
+    log.innerHTML = '<p class="hint">No messages yet — say the first word.</p>';
+    return;
+  }
+  log.innerHTML = messages.map(m =>
+    '<p class="chat-msg"><span class="who">' + esc(m.sender) + '</span>' +
+    '<span class="when">' + new Date(m.created_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) + '</span><br>' +
+    esc(m.body) + '</p>'
+  ).join("");
+  log.scrollTop = log.scrollHeight;
+}
+
+function joinChat() {
+  const name = document.getElementById("chat-name").value.trim();
+  if (!name) return;
+  chatName = name;
+  localStorage.setItem("mm_chat_name", name);
+  input.disabled = false;
+  sendBtn.disabled = false;
+  document.getElementById("chat-name-zone").innerHTML =
+    '<span class="hint">Chatting as <strong style="color:var(--gold);">' + esc(name) + '</strong></span>';
+  MMStore.listChat(ROOM).then(renderChat);
+  MMStore.subscribeChat(ROOM, renderChat);
+  input.focus();
+}
+
+document.getElementById("chat-join").addEventListener("click", joinChat);
+document.getElementById("chat-name").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") { e.preventDefault(); joinChat(); }
+});
+if (chatName) {
+  document.getElementById("chat-name").value = chatName;
+}
+
+document.getElementById("chat-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const body = input.value.trim();
+  if (!body || !chatName) return;
+  input.value = "";
+  const msg = await MMStore.sendChat(ROOM, chatName, body);
+  // Demo mode & no-realtime fallback: render immediately too.
+  const cur = await MMStore.listChat(ROOM);
+  if (!cur.some(m => m.id === msg.id)) { cur.push(msg); }
+  renderChat(cur);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay Your Booking Fee — MONEY MOTION STUDIOS</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html">Live Room</a>
+      <a href="book.html">Book a Session</a>
+      <a href="dashboard.html">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1 class="chrome center" style="font-size:34px;">Lock In Your Session</h1>
+
+  <div class="form-card" id="pay-card">
+    <div id="booking-summary" class="center">
+      <p class="hint">Loading your booking…</p>
+    </div>
+
+    <div class="pay-amount">
+      <p class="hint" style="margin-bottom:2px;">DUE NOW — BOOKING FEE</p>
+      <div class="due" id="due-now">$50</div>
+      <p class="hint" id="balance-line"></p>
+    </div>
+
+    <p class="note-strip">Put your booking number <strong id="note-number"></strong> in the payment note so we can match your payment.</p>
+
+    <h2 class="section-title" style="margin-top:22px;">Pay with</h2>
+    <div class="cards" style="grid-template-columns:1fr;">
+      <div class="card pay-option">
+        <h3>Cash App</h3>
+        <span class="handle" id="cashapp-handle"></span>
+        <a class="btn btn-gold btn-small" id="cashapp-link" href="#" target="_blank" rel="noopener">Pay $50 on Cash App</a>
+      </div>
+      <div class="card pay-option">
+        <h3>Venmo</h3>
+        <span class="handle">Scan / tap to open Venmo</span>
+        <a class="btn btn-gold btn-small" id="venmo-link" href="#" target="_blank" rel="noopener">Pay $50 on Venmo</a>
+      </div>
+      <div class="card pay-option">
+        <h3>Chime</h3>
+        <div class="copy-row">
+          <span class="handle" id="chime-handle"></span>
+          <button class="btn btn-ghost btn-small" type="button" id="chime-copy">Copy</button>
+        </div>
+        <p class="hint" style="margin:0;">Send the $50 in the Chime app to this $ChimeSign, booking number in the note.</p>
+      </div>
+    </div>
+
+    <div id="paid-zone" style="margin-top:22px;">
+      <button class="btn btn-gold" id="paid-btn" type="button" style="width:100%;">I've Paid</button>
+      <p class="hint center">Your booking stays <strong>pending</strong> until the studio confirms your payment. Questions? Call <a href="tel:+17189088466">718-908-8466</a>.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/logo-data.js"></script>
+<script>
+MMStore.showDemoNotice();
+
+const params = new URLSearchParams(window.location.search);
+const number = params.get("n") || "";
+const fee = MM_CONFIG.BOOKING_FEE;
+let booking = null;
+
+document.getElementById("note-number").textContent = number || "(your booking number)";
+
+function fmtWhen(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) +
+         " at " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+
+async function init() {
+  // Payment handles come from settings (dashboard-editable),
+  // with config.js defaults as fallback — never hard-coded here.
+  const s = await MMStore.getSettings();
+  const cashHandle = s.cashapp_handle || MM_CONFIG.DEFAULT_SETTINGS.cashapp_handle;
+  document.getElementById("cashapp-handle").textContent = cashHandle;
+  document.getElementById("cashapp-link").href =
+    "https://cash.app/" + cashHandle.replace(/^\$/, "$") + "/" + fee;
+  document.getElementById("venmo-link").href =
+    s.venmo_link || MM_CONFIG.DEFAULT_SETTINGS.venmo_link;
+  document.getElementById("chime-handle").textContent =
+    s.chime_handle || MM_CONFIG.DEFAULT_SETTINGS.chime_handle;
+
+  const summary = document.getElementById("booking-summary");
+  const balance = document.getElementById("balance-line");
+
+  if (!number) {
+    summary.innerHTML = '<p class="hint">No booking number in this link. <a href="book.html">Book a session first</a> — or if you already booked, use the link you were sent.</p>';
+    return;
+  }
+
+  try {
+    booking = await MMStore.getBookingByNumber(number);
+  } catch (e) { booking = null; }
+
+  if (!booking) {
+    summary.innerHTML = '<p class="hint">We couldn\'t find booking <strong>' + number + '</strong>' +
+      (MMStore.DEMO ? ' in this browser (demo mode stores bookings only on the device that made them).' : '.') +
+      ' You can still send the $' + fee + ' fee below with the booking number in the note, or call <a href="tel:+17189088466">718-908-8466</a>.</p>';
+    return;
+  }
+
+  document.getElementById("due-now").textContent = "$" + (booking.fee_due || fee);
+  summary.innerHTML =
+    '<p style="margin:0;"><strong>Booking ' + booking.booking_number + '</strong> — ' + booking.service + '</p>' +
+    '<p class="hint" style="margin:2px 0 0;">' + booking.name + (booking.starts_at ? ' · ' + fmtWhen(booking.starts_at) : '') +
+    '<br>Status: ' + booking.status + '</p>';
+  const total = booking.price || 0;
+  const due = booking.fee_due || fee;
+  balance.textContent = "Service total $" + total + " — after the $" + due + " fee, your balance at the session is $" + Math.max(total - due, 0) + ".";
+
+  if (booking.status !== "Pending payment") {
+    showPaidState();
+  }
+}
+
+function showPaidState() {
+  document.getElementById("paid-zone").innerHTML =
+    '<div class="note-strip">Thank you — your payment is marked as sent.<br>' +
+    'The studio will confirm it and your session is locked in.<br>' +
+    'Bring a consolidated WAV session. See you at 2 Saint Nicholas Ave, Brooklyn.</div>';
+}
+
+document.getElementById("paid-btn").addEventListener("click", async function () {
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = "Saving…";
+  try {
+    if (booking) {
+      await MMStore.setBookingStatus(booking, "Payment sent — awaiting confirmation");
+    }
+    showPaidState();
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = "I've Paid";
+    alert("Couldn't save that just now — please call 718-908-8466 and we'll mark it for you.");
+  }
+});
+
+document.getElementById("chime-copy").addEventListener("click", async function () {
+  const handle = document.getElementById("chime-handle").textContent;
+  try {
+    await navigator.clipboard.writeText(handle);
+    this.textContent = "Copied ✓";
+  } catch (e) {
+    this.textContent = handle;
+  }
+  const b = this;
+  setTimeout(function () { b.textContent = "Copy"; }, 2000);
+});
+
+init();
+</script>
+</body>
+</html>
