@@ -208,6 +208,29 @@
     await sb.auth.signOut();
   }
 
+  async function ownerResetPassword(email) {
+    if (DEMO) throw new Error("Demo mode has no email accounts - use the demo owner password.");
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+    if (error) throw error;
+    return true;
+  }
+
+  async function ownerUpdatePassword(newPassword) {
+    if (DEMO) throw new Error("Demo mode has no email accounts.");
+    const { error } = await sb.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+    return true;
+  }
+
+  function onPasswordRecovery(fn) {
+    if (DEMO || !sb) return;
+    sb.auth.onAuthStateChange(function (event) {
+      if (event === "PASSWORD_RECOVERY") fn();
+    });
+  }
+
   // ---------- demo banner ----------
   function showDemoNotice() {
     if (!DEMO) return;
@@ -224,7 +247,7 @@
     getSettings, saveSettings,
     createBooking, getBookingByNumber, listBookings, setBookingStatus,
     listChat, sendChat, subscribeChat, subscribeSettings,
-    ownerSignedIn, ownerSignIn, ownerSignOut,
+    ownerSignedIn, ownerSignIn, ownerSignOut, ownerResetPassword, ownerUpdatePassword, onPasswordRecovery,
     showDemoNotice
   };
 })();

@@ -45,6 +45,22 @@
     <p class="form-error" id="login-error"></p>
     <button class="btn btn-gold" type="submit" style="width:100%;">Sign In</button>
     <p class="hint center" id="login-hint"></p>
+    <p class="center" style="margin-top:10px;">
+      <button class="btn btn-ghost btn-small" id="forgot-btn" type="button">Forgot password? Email me a reset link</button>
+    </p>
+    <p class="hint center" id="forgot-msg"></p>
+  </form>
+
+  <!-- Set a new password (shown after opening the emailed reset link) -->
+  <form class="form-card hidden" id="reset-form">
+    <h3 style="margin-top:0;">Set your new password</h3>
+    <label for="new-password">New password</label>
+    <input id="new-password" type="password" autocomplete="new-password">
+    <label for="new-password2">Type it again</label>
+    <input id="new-password2" type="password" autocomplete="new-password">
+    <p class="form-error" id="reset-error"></p>
+    <button class="btn btn-gold" type="submit" style="width:100%;">Save New Password</button>
+    <p class="hint center" id="reset-msg"></p>
   </form>
 
   <!-- Dashboard -->
@@ -225,8 +241,53 @@ document.getElementById("settings-form").addEventListener("submit", async functi
   }
 });
 
+// Forgot password -> email a reset link (owner only; customers never sign in).
+document.getElementById("forgot-btn").addEventListener("click", async function () {
+  const msg = document.getElementById("forgot-msg");
+  const email = document.getElementById("login-email").value.trim();
+  msg.textContent = "";
+  if (!email) { msg.textContent = "Type your owner email above first, then tap this button."; return; }
+  try {
+    await MMStore.ownerResetPassword(email);
+    msg.textContent = "Reset link sent - check that email inbox and tap the link, then set your new password here.";
+  } catch (ex) {
+    msg.textContent = "Could not send: " + (ex.message || "try again.");
+  }
+});
+
+// Opened from the reset email -> show the set-new-password form.
+if (window.MMStore.onPasswordRecovery) {
+  MMStore.onPasswordRecovery(function () {
+    loginForm.classList.add("hidden");
+    document.getElementById("reset-form").classList.remove("hidden");
+  });
+}
+
+document.getElementById("reset-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const err = document.getElementById("reset-error");
+  const msg = document.getElementById("reset-msg");
+  err.textContent = ""; msg.textContent = "";
+  const p1 = document.getElementById("new-password").value;
+  const p2 = document.getElementById("new-password2").value;
+  if (!p1 || p1.length < 6) { err.textContent = "Password needs at least 6 characters."; return; }
+  if (p1 !== p2) { err.textContent = "The two passwords don't match."; return; }
+  try {
+    await MMStore.ownerUpdatePassword(p1);
+    msg.textContent = "Password saved. Taking you to the dashboard...";
+    setTimeout(showDash, 900);
+  } catch (ex) {
+    err.textContent = "Save failed: " + (ex.message || "request a fresh reset link and try again.");
+  }
+});
+
 // If already signed in (e.g. returning to the page), skip the gate.
-MMStore.ownerSignedIn().then(function (yes) { if (yes) showDash(); });
+// (In recovery mode the reset form takes over instead.)
+MMStore.ownerSignedIn().then(function (yes) {
+  if (!yes) return;
+  if (window.location.hash.indexOf("type=recovery") !== -1) return;
+  showDash();
+});
 </script>
 </body>
 </html>
