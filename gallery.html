@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Money Motion">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photos — MONEY MOTION STUDIOS, Brooklyn</title>
+<meta name="description" content="Inside MONEY MOTION STUDIOS, Brooklyn NY — the desk, the plaque wall, the booth. KEYZ — Money Motion Engineer.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html">Live Room</a>
+      <a href="gallery.html" class="active">Photos</a>
+      <a href="book.html">Book a Session</a>
+      <a href="dashboard.html">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h2 class="section-title">The Room, In Pictures</h2>
+  <p class="muted">Inside MONEY MOTION STUDIOS — 2 Saint Nicholas Ave, Brooklyn. The desk, the plaques, the booth.</p>
+  <div class="gal-grid gal-big" id="mm-gallery"></div>
+  <div style="text-align:center;margin:18px 0 6px">
+    <a class="btn btn-gold" href="book.html">Book a Session</a>
+  </div>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/logo-data.js"></script>
+<script src="js/pwa.js"></script>
+<script src="js/gallery-data.js"></script>
+<script src="js/gallery.js"></script>
+</body>
+</html>
