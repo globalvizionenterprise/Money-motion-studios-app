@@ -1,7 +1,17 @@
 // PWA: service worker registration + install prompt button.
 if ("serviceWorker" in navigator) {
+  // Reload once when a new version of the app takes over, so an open app
+  // refreshes itself to the latest build automatically.
+  let mmRefreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (mmRefreshing) return;
+    mmRefreshing = true;
+    window.location.reload();
+  });
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js")
+      .then((reg) => { reg.update().catch(() => {}); })
+      .catch(() => {});
   });
 }
 let mmDeferredPrompt = null;
