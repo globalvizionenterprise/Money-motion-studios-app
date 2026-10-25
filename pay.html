@@ -95,6 +95,12 @@ let booking = null;
 
 document.getElementById("note-number").textContent = number || "(your booking number)";
 
+function esc(t) {
+  return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
 function fmtWhen(iso) {
   if (!iso) return "";
   const d = new Date(iso);
@@ -105,7 +111,7 @@ function fmtWhen(iso) {
 async function init() {
   // Payment handles come from settings (dashboard-editable),
   // with config.js defaults as fallback — never hard-coded here.
-  const s = await MMStore.getSettings();
+  const s = await MMStore.getSettings().catch(function () { return {}; });
   const cashHandle = s.cashapp_handle || MM_CONFIG.DEFAULT_SETTINGS.cashapp_handle;
   document.getElementById("cashapp-handle").textContent = cashHandle;
   document.getElementById("cashapp-link").href =
@@ -128,7 +134,7 @@ async function init() {
   } catch (e) { booking = null; }
 
   if (!booking) {
-    summary.innerHTML = '<p class="hint">We couldn\'t find booking <strong>' + number + '</strong>' +
+    summary.innerHTML = '<p class="hint">We couldn\'t find booking <strong>' + esc(number) + '</strong>' +
       (MMStore.DEMO ? ' in this browser (demo mode stores bookings only on the device that made them).' : '.') +
       ' You can still send the $' + fee + ' fee below with the booking number in the note, or call <a href="tel:+17189088466">718-908-8466</a>.</p>';
     return;
@@ -136,14 +142,14 @@ async function init() {
 
   document.getElementById("due-now").textContent = "$" + (booking.fee_due || fee);
   summary.innerHTML =
-    '<p style="margin:0;"><strong>Booking ' + booking.booking_number + '</strong> — ' + booking.service + '</p>' +
-    '<p class="hint" style="margin:2px 0 0;">' + booking.name + (booking.starts_at ? ' · ' + fmtWhen(booking.starts_at) : '') +
-    '<br>Status: ' + booking.status + '</p>';
+    '<p style="margin:0;"><strong>Booking ' + esc(booking.booking_number) + '</strong> — ' + esc(booking.service) + '</p>' +
+    '<p class="hint" style="margin:2px 0 0;">' + esc(booking.name) + (booking.starts_at ? ' · ' + fmtWhen(booking.starts_at) : '') +
+    '<br>Status: ' + esc(booking.status) + '</p>';
   const total = booking.price || 0;
   const due = booking.fee_due || fee;
   balance.textContent = "Service total $" + total + " — after the $" + due + " fee, your balance at the session is $" + Math.max(total - due, 0) + ".";
 
-  if (booking.status !== "Pending payment") {
+  if (/payment sent|confirmed/i.test(booking.status || "")) {
     showPaidState();
   }
 }
@@ -159,10 +165,14 @@ document.getElementById("paid-btn").addEventListener("click", async function () 
   const btn = this;
   btn.disabled = true;
   btn.textContent = "Saving…";
+  if (!booking) {
+    btn.disabled = false;
+    btn.textContent = "I've Paid";
+    alert("We couldn't find that booking here, so nothing was marked. You can still send the fee with your booking number in the note — or call 718-908-8466 and we'll mark it for you.");
+    return;
+  }
   try {
-    if (booking) {
-      await MMStore.setBookingStatus(booking, "Payment sent — awaiting confirmation");
-    }
+    await MMStore.setBookingStatus(booking, "Payment sent — awaiting confirmation");
     showPaidState();
   } catch (e) {
     btn.disabled = false;
