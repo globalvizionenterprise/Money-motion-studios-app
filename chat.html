@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Money Motion">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Chat — Ask the Studio | MONEY MOTION STUDIOS</title>
+<meta name="description" content="Ask the MONEY MOTION STUDIOS assistant about studio time, rates, booking and services. Free AI chat — Brooklyn recording studio. KEYZ — Money Motion Engineer.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="live.html">Live Room</a>
+      <a href="gallery.html">Photos</a>
+      <a href="global.html">Global Vizion</a>
+      <a href="chat.html" class="active">AI Chat</a>
+      <a href="book.html">Book a Session</a>
+      <a href="dashboard.html">Owner</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1 class="chrome">AI CHAT</h1>
+    <p class="tagline">Ask the studio anything</p>
+    <p class="muted">Rates, booking, what to bring, Global Vizion services — the assistant knows the studio. For anything it can't answer, call <a href="tel:+17189088466">718-908-8466</a>.</p>
+  </section>
+
+  <div class="card">
+    <div id="ai-messages" class="ai-messages">
+      <div class="ai-msg assistant">🎚️ Welcome to MONEY MOTION STUDIOS. Ask me about studio time, rates, booking, or what to bring to your session.</div>
+    </div>
+    <div class="ai-controls">
+      <div class="ai-model-wrap">
+        <label for="ai-model">Model</label>
+        <select id="ai-model">
+          <option value="openrouter/free" selected>Free Models Router (auto-picks a free model)</option>
+          <option value="google/gemma-4-31b-it:free">Google Gemma 4 31B (free)</option>
+          <option value="google/gemma-4-26b-a4b-it:free">Google Gemma 4 26B (free)</option>
+          <option value="nvidia/nemotron-3-ultra-550b-a55b:free">NVIDIA Nemotron 3 Ultra (free)</option>
+          <option value="nvidia/nemotron-3-super-120b-a12b:free">NVIDIA Nemotron 3 Super (free)</option>
+          <option value="nvidia/nemotron-3.5-super-vl:free">NVIDIA Nemotron 3.5 Super VL (free)</option>
+          <option value="nvidia/nemotron-3.5-lightning:free">NVIDIA Nemotron 3.5 Lightning (free)</option>
+          <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">NVIDIA Nemotron 3 Nano Omni (free)</option>
+          <option value="poolside/laguna-s-2.1:free">Poolside Laguna S 2.1 (free)</option>
+          <option value="poolside/laguna-xs-2.1:free">Poolside Laguna XS 2.1 (free)</option>
+          <option value="cohere/north-mini-code:free">Cohere North Mini Code (free)</option>
+          <option value="recursive/flint-v1.0:free">Recursive Flint (free)</option>
+          <option value="xingchen-agi/xing4.0-29b-a4b:free">XingChen Xing4.0 29B (free)</option>
+          <option value="dots-studio/dots-3-note-preview:free">Dots Studio Dots3-Note Preview (free)</option>
+          <option value="liquid/lfm-2.5-2.6b:free">LiquidAI LFM2.5-2.6B (free)</option>
+        </select>
+      </div>
+      <div class="ai-input-wrap">
+        <label for="ai-input">Message</label>
+        <textarea id="ai-input" rows="3" maxlength="4000" placeholder="Example: how much is studio time and what do I need to bring?"></textarea>
+      </div>
+    </div>
+    <p class="form-error" id="ai-error"></p>
+    <button class="btn btn-gold" id="ai-send" type="button" style="width:100%;">Send</button>
+    <p class="hint center">Free AI models run on OpenRouter at $0 — they carry daily limits, so if one stalls, pick another. To book, use the Book a Session page or call 718-908-8466.</p>
+  </div>
+</main>
+
+<footer>
+  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  From the block to the booth.
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/logo-data.js"></script>
+<script src="js/pwa.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>
