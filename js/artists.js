@@ -5,8 +5,12 @@
     tiktok: "🎵 TikTok",
     youtube: "▶️ YouTube",
     spotify: "🎧 Spotify",
+    apple: "🍎 Apple Music",
+    soundcloud: "🔊 SoundCloud",
+    snapchat: "👻 Snapchat",
     x: "𝕏",
-    facebook: "📘 Facebook"
+    facebook: "📘 Facebook",
+    website: "🌐 Website"
   };
 
   function esc(s) {
@@ -29,10 +33,31 @@
     var socials = Object.keys(SOCIAL_LABELS).filter(function (k) { return p.socials && p.socials[k]; }).map(function (k) {
       return '<a href="' + esc(p.socials[k]) + '" target="_blank" rel="noopener">' + SOCIAL_LABELS[k] + "</a>";
     }).join("");
+    var feature = "";
+    if (p.feature && p.feature.url) {
+      feature = '<div class="person-feature">' +
+        (p.feature.image ? '<a href="' + esc(p.feature.url) + '" target="_blank" rel="noopener"><img src="' + esc(p.feature.image) + '" alt="' + esc(p.feature.title || "") + '"></a>' : "") +
+        '<p class="person-feature-title">' + esc(p.feature.title || "") + "</p>" +
+        (p.feature.note ? "<p>" + esc(p.feature.note) + "</p>" : "") +
+        '<a class="btn btn-gold person-link" href="' + esc(p.feature.url) + '" target="_blank" rel="noopener">▶ Listen / Get the EP</a></div>';
+    }
+    var video = "";
+    if (p.video && p.video.url) {
+      video = '<div class="person-video"><a href="' + esc(p.video.url) + '" target="_blank" rel="noopener">' +
+        (p.video.thumb ? '<img src="' + esc(p.video.thumb) + '" alt="' + esc(p.video.label || "Video") + '">' : "") +
+        '<span class="person-video-label">' + esc(p.video.label || "▶ Watch video") + "</span></a></div>";
+    }
+    var gallery = "";
+    if (p.gallery && p.gallery.length) {
+      gallery = '<div class="person-gallery">' + p.gallery.filter(function (g) { return g; }).map(function (g) {
+        return '<a href="' + esc(g) + '" target="_blank" rel="noopener"><img src="' + esc(g) + '" alt="' + esc(p.name) + ' photo" loading="lazy"></a>';
+      }).join("") + "</div>";
+    }
     return '<div class="card person-card">' + photo +
       "<h3>" + esc(p.name) + "</h3>" +
       (p.role ? '<p class="person-role">' + esc(p.role) + "</p>" : "") +
       (p.blurb ? "<p>" + esc(p.blurb) + "</p>" : "") +
+      feature + video + gallery +
       (content ? '<div class="person-content">' + content + "</div>" : "") +
       (socials ? '<div class="socials">' + socials + "</div>" : "") +
       "</div>";

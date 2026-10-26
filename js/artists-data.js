@@ -3,9 +3,43 @@
 // or data URI, or "" for initials), content links and socials. Save, push, done.
 window.MM_PEOPLE = {
   artists: [
-    // { name: "ARTIST NAME", role: "Artist", blurb: "", photo: "",
-    //   content: [ { label: "Latest track", url: "https://..." } ],
-    //   socials: { instagram: "", tiktok: "", youtube: "", spotify: "", x: "", facebook: "" } }
+    {
+      name: "JaredSB",
+      role: "R&B Artist",
+      blurb: "Brooklyn R&B singer with smooth vocals and real stories. His new EP \u201CTemporary Nights\u201D is out now on every platform.",
+      photo: "https://static.wixstatic.com/media/2f0be0_b8c015c8d2c7439ebe8d855d2d7d706e~mv2.jpg/v1/fill/w_980,h_1472,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/2f0be0_b8c015c8d2c7439ebe8d855d2d7d706e~mv2.jpg",
+      feature: {
+        title: "\uD83D\uDCBF NEW EP \u2014 Temporary Nights",
+        note: "Out everywhere now \u2014 tap for the EP page",
+        image: "https://static.wixstatic.com/media/2f0be0_51be2ae3d76042e3a0211352537fdb09~mv2.png/v1/fill/w_980,h_469,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/2f0be0_51be2ae3d76042e3a0211352537fdb09~mv2.png",
+        url: "https://www.jaredsbworld.com/temporary-nights"
+      },
+      video: {
+        thumb: "https://static.wixstatic.com/media/2f0be0_f101b7ea1f7c45c4a7c6f93bc0d99f86~mv2.png/v1/fill/w_1280,h_720,enc_auto/file.jpeg",
+        url: "https://www.youtube.com/@jaredsb01",
+        label: "\u25B6 Watch his videos on YouTube"
+      },
+      gallery: [
+        "https://static.wixstatic.com/media/2f0be0_5a795d2c42f84ddaa5897be50582ca70~mv2.jpg/v1/fill/w_980,h_462,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/2f0be0_5a795d2c42f84ddaa5897be50582ca70~mv2.jpg",
+        "https://static.wixstatic.com/media/2f0be0_4d0134c352e84df2a02d37fd731710f3~mv2.jpg/v1/fill/w_774,h_624,fp_0.43_0.43,q_90,enc_avif,quality_auto/2f0be0_4d0134c352e84df2a02d37fd731710f3~mv2.jpg",
+        "https://static.wixstatic.com/media/2f0be0_8596ac60844b46129f603d155410d8c9~mv2.jpg/v1/fill/w_814,h_1016,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/2f0be0_8596ac60844b46129f603d155410d8c9~mv2.jpg"
+      ],
+      content: [
+        { label: "Latest video (IG reel)", url: "https://www.instagram.com/reel/De9qbD7Bw8K/" },
+        { label: "All his links", url: "https://linktr.ee/JaredSB_" },
+        { label: "Website \u2014 jaredsbworld.com", url: "https://www.jaredsbworld.com" }
+      ],
+      socials: {
+        instagram: "https://www.instagram.com/jaredsb_",
+        tiktok: "https://www.tiktok.com/@jaredsbshow",
+        youtube: "https://www.youtube.com/@jaredsb01",
+        spotify: "https://open.spotify.com/artist/5xGunSSMx9xjpjrA1tQyPz",
+        facebook: "https://www.facebook.com/jared.sb.39",
+        snapchat: "https://www.snapchat.com/@officialjared1",
+        soundcloud: "https://soundcloud.com/user-675316285",
+        apple: "https://music.apple.com/us/artist/jaredsb/1470789680"
+      }
+    }
   ],
   engineers: [
     {

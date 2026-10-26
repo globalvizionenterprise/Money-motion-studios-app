@@ -198,3 +198,11 @@ footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
 .person-link { font-size: 14px; }
 .socials { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: center; }
 .socials a { color: var(--gold); text-decoration: none; font-weight: 600; font-size: 13.5px; }
+.person-feature { margin-top: 12px; }
+.person-feature img { width: 100%; border-radius: 10px; display: block; }
+.person-feature-title { color: var(--gold); font-weight: 800; margin: 8px 0 2px; }
+.person-video { margin-top: 12px; position: relative; }
+.person-video img { width: 100%; border-radius: 10px; display: block; }
+.person-video-label { display: block; margin-top: 6px; color: var(--gold); font-weight: 700; }
+.person-gallery { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.person-gallery img { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; display: block; }
