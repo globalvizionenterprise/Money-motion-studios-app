@@ -187,3 +187,14 @@ footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
 .ai-controls{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .ai-controls label{display:block;font-size:12px;letter-spacing:.08em;color:var(--muted);margin-bottom:4px;text-transform:uppercase}
 .ai-controls select,.ai-controls textarea{width:100%;box-sizing:border-box}
+
+/* Artists / Engineers / Affiliates roster */
+.person-grid { align-items: start; }
+.person-card { text-align: center; }
+.person-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; display: block; margin: 2px auto 10px; border: 2px solid var(--gold); }
+.person-initials { display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; color: var(--gold); background: #171717; }
+.person-role { color: var(--gold) !important; font-weight: 700; font-size: 13px !important; text-transform: uppercase; letter-spacing: .05em; }
+.person-content { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.person-link { font-size: 14px; }
+.socials { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: center; }
+.socials a { color: var(--gold); text-decoration: none; font-weight: 600; font-size: 13.5px; }
