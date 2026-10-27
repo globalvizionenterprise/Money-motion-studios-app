@@ -29,7 +29,6 @@
       <a href="global.html">Global Vizion</a>
       <a href="chat.html">AI Chat</a>
       <a href="book.html">Book a Session</a>
-      <a href="dashboard.html">Owner</a>
     </div>
   </nav>
 </header>
@@ -65,7 +64,6 @@
         <button class="btn btn-gold btn-small" id="g-save" type="button">Save broadcast settings</button>
         <span class="hint" id="g-saved"></span>
       </div>
-      <p class="hint" id="owner-hint">Studio owner? <a href="dashboard.html">Sign in</a> to get the Go Live controls here.</p>
     </div>
 
     <div class="chat-box">
@@ -142,7 +140,6 @@ async function loadSettings() {
   const signedIn = await MMStore.ownerSignedIn();
   if (signedIn) {
     document.getElementById("golive-panel").classList.remove("hidden");
-    document.getElementById("owner-hint").classList.add("hidden");
     document.getElementById("g-playback").value = settings.playback_url || "";
     document.getElementById("g-live").checked = settings.live_on === "true";
   }
