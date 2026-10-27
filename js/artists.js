@@ -69,11 +69,13 @@
     el.innerHTML = (list && list.length) ? list.map(card).join("") : emptyHtml;
   }
 
-  var P = window.MM_PEOPLE || { artists: [], engineers: [], affiliates: [] };
+  var P = window.MM_PEOPLE || { artists: [], engineers: [], affiliates: [], famelife: [] };
   fill("roster-artists", P.artists,
     '<div class="card person-card"><h3>Roster dropping soon</h3><p>Artists who record at MONEY MOTION STUDIOS get featured here — their music, their videos, their socials. Book a session and get on the page.</p><div class="person-content"><a class="btn btn-gold person-link" href="book.html">Book a Session</a></div></div>');
   fill("roster-engineers", P.engineers,
     '<div class="card person-card"><h3>Engineers</h3><p>Our engineers get featured here.</p></div>');
+  fill("roster-famelife", P.famelife,
+    '<div class="card person-card"><h3>FAME LIFE ENTERTAINMENT</h3><p>Management &amp; entertainment — booking shows, events and artists.</p></div>');
   fill("roster-affiliates", P.affiliates,
     '<div class="card person-card"><h3>Affiliates dropping soon</h3><p>The brands, crews and businesses we\'re affiliated with get their shine here — links and socials included.</p></div>');
 })();
