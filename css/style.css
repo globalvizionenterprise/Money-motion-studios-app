@@ -44,7 +44,8 @@ a { color: var(--gold); }
   padding: 10px 16px;
 }
 .nav .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.nav .brand img { width: 40px; height: 40px; object-fit: cover; border-radius: 9px; background: #fff; }
+.nav .brand span { display: none; }
+.nav .brand img { height: 46px; width: auto; max-width: 150px; object-fit: contain; border-radius: 8px; background: #000; }
 .nav .brand span {
   font-weight: 800; letter-spacing: .06em; font-size: 15px;
   background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent;

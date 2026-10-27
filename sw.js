@@ -1,11 +1,11 @@
 // MONEY MOTION STUDIOS - service worker
 // Strategy: always try the network first so the app is fresh on every open;
 // the cache is only an offline fallback.
-const CACHE = "money-motion-v16";
+const CACHE = "money-motion-v17";
 const SHELL = [
   "./", "./index.html", "./gallery.html", "./artists.html", "./producers.html", "./fame.html", "./global.html", "./chat.html", "./book.html", "./pay.html", "./live.html", "./dashboard.html",
   "./css/style.css", "./js/config.js", "./js/store.js", "./js/logo-data.js", "./js/pwa.js", "./js/chat.js", "./js/artists-data.js", "./js/artists.js", "./js/producers-data.js", "./js/producers.js",
-  "./manifest.webmanifest", "./icon.svg"
+  "./manifest.webmanifest", "./icon.svg", "./logo.svg"
 ];
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
