@@ -8,9 +8,10 @@
 // (video 1 first, video 2 second). Empty = poster mode (logo + animated shade),
 // so the header is never blank.
 var MME_VIDEOS = [
-  // "https://.../8351.mp4",
-  // "https://.../8339.mp4"
+  "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/hero-1.mp4",
+  "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/hero-2.mp4"
 ];
+var MME_POSTER = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/hero-poster.jpg";
 // =============================================================================
 
 (function () {
@@ -44,6 +45,7 @@ var MME_VIDEOS = [
       var cur = 0, swapping = false;
       vids.forEach(function (v, i) {
         v.src = MME_VIDEOS[i % MME_VIDEOS.length];
+        if (MME_POSTER) v.poster = MME_POSTER;
         v.muted = true; v.playsInline = true; v.preload = "auto";
       });
       function swap() {
