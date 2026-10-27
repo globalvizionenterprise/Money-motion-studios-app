@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#050505">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,7 +22,19 @@
 </script>
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="home">
+
+<!-- M.M.E. cinematic intro (8s, skippable, once per session) -->
+<div id="mme-intro" aria-hidden="true">
+  <div class="mme-intro-scan"></div>
+  <div class="mme-intro-logo">
+    <img class="mme-gl g-base" src="logo.svg" alt="">
+    <img class="mme-gl g-r" src="logo.svg" alt="">
+    <img class="mme-gl g-b" src="logo.svg" alt="">
+  </div>
+  <div class="mme-intro-title">MONEY MOTION STUDIOS</div>
+  <button id="mme-skip" type="button">SKIP INTRO</button>
+</div>
 
 <header class="site-header">
   <nav class="nav">
@@ -39,50 +51,92 @@
       <a href="book.html">Book a Session</a>
       <a href="dashboard.html">Owner</a>
     </div>
+    <a class="btn btn-gold mme-booknow" href="book.html">BOOK NOW</a>
   </nav>
 </header>
 
-<main class="wrap">
-  <section class="hero">
-    <div class="logo-card"><img src="logo.svg" alt="MONEY MOTION STUDIOS — chrome MM logo"></div>
-    <h1 class="chrome">MONEY MOTION STUDIOS</h1>
+<!-- FULL-SCREEN CINEMATIC VIDEO HEADER -->
+<section class="mme-hero" id="top">
+  <div class="mme-vids">
+    <video class="mme-vid va" muted playsinline preload="auto" aria-hidden="true"></video>
+    <video class="mme-vid vb" muted playsinline preload="none" aria-hidden="true"></video>
+  </div>
+  <div class="mme-hero-shade"></div>
+  <div class="mme-hero-inner">
+    <img class="mme-logo" src="logo.svg" alt="MONEY MOTION STUDIOS — chrome MM logo">
+    <h1 class="chrome mme-h1">MONEY MOTION STUDIOS</h1>
+    <p class="mme-tag">WHERE VISION MEETS MOTION.</p>
     <p class="tagline">From the block to the booth.</p>
+    <p class="mme-statement">Music. Film. Production. Creativity. Entertainment. Building a legacy through every sound, every frame, and every vision.</p>
     <p class="engineer-line"><strong>KEYZ — Money Motion Engineer.</strong> Mixing engineer for MONEY MOTION STUDIOS, Brooklyn.</p>
-    <div>
-      <a class="btn btn-gold" href="book.html">Book a Session</a>
-      <a class="btn btn-ghost" href="live.html">Enter the Live Room</a>
+    <div class="mme-cta">
+      <a class="btn btn-gold" href="#portfolio">EXPLORE OUR WORK</a>
+      <a class="btn btn-gold" href="book.html">BOOK A SESSION</a>
+      <a class="btn btn-ghost" href="#film">WATCH SHOWREEL</a>
     </div>
-  </section>
+  </div>
+  <a class="mme-scroll" href="#about" aria-label="Scroll down">▾</a>
+</section>
 
-  <h2 class="section-title">Rates</h2>
+<main class="wrap">
+  <h2 class="section-title rv" id="about">About Money Motion Studios</h2>
+  <p class="muted rv">MONEY MOTION STUDIOS is a Brooklyn entertainment and production company built on creativity, perseverance and business excellence. From the block to the booth — recording, production and visual storytelling under one roof at 2 Saint Nicholas Ave, Brooklyn, NY.</p>
+
+  <h2 class="section-title rv" id="music">Music Production</h2>
   <div class="cards">
-    <div class="card">
+    <div class="card rv"><h3>🎙️ Recording</h3><p>Professional studio recording in a treated Brooklyn room — vocals, full sessions and voice work.</p></div>
+    <div class="card rv"><h3>🎹 Production</h3><p>Beats and full music production, plus artist development — building the record from the idea up.</p></div>
+    <div class="card rv"><h3>🎚️ Mixing &amp; Mastering</h3><p>Engineering, mixing and mastering by KEYZ — Money Motion Engineer. Send a session, get a finished record back.</p></div>
+  </div>
+
+  <h2 class="section-title rv" id="film">Film &amp; Visual Production</h2>
+  <div class="cards">
+    <div class="card rv"><h3>🎬 Music Videos &amp; Film</h3><p>Cinematic music videos, short films and trailers with a major-motion-picture look.</p></div>
+    <div class="card rv"><h3>📺 Promotional Production</h3><p>Promos, posters, flyers and visual campaigns that make artists and businesses look like money.</p></div>
+    <div class="card rv"><h3>🌐 Websites &amp; Apps</h3><p>Through <a href="global.html">Global Vizion</a> — websites and apps built for artists, studios and businesses.</p></div>
+  </div>
+
+  <h2 class="section-title rv">Rates</h2>
+  <div class="cards">
+    <div class="card rv">
       <h3>Studio Time — 5 Hours</h3>
       <div class="price">$150</div>
       <p>Five hours in the booth. <strong>Free mixdown included.</strong></p>
     </div>
-    <div class="card">
+    <div class="card rv">
       <h3>Booking Fee</h3>
       <div class="price">$50</div>
       <p>Due when you book to lock your session in. Applied to your total.</p>
     </div>
-    <div class="card">
+    <div class="card rv">
       <h3>Mix &amp; Master Only</h3>
       <div class="price">$300</div>
       <p>Send your session, get a finished record back.</p>
     </div>
   </div>
-  <div class="note-strip">Bring a consolidated WAV session — works for all DAWs.</div>
+  <div class="note-strip rv">Bring a consolidated WAV session — works for all DAWs.</div>
 
-  <h2 class="section-title">The Studio</h2>
-  <div class="info-grid">
-    <div class="card"><p><span>Location</span>2 Saint Nicholas Ave, Brooklyn, NY 11237</p></div>
-    <div class="card"><p><span>Book by phone</span><a href="tel:+17189088466">718-908-8466</a> &nbsp;·&nbsp; <a href="tel:+17184156422">718-415-6422</a></p></div>
-    <div class="card"><p><span>The Engineer</span>KEYZ — recording &amp; mixing engineer for Money Motion Studios. Instagram: <a href="https://www.instagram.com/keyzondabeatz37" target="_blank" rel="noopener">@keyzondabeatz37</a></p></div>
-    <div class="card"><p><span>Follow</span>Studio Instagram: <a href="https://www.instagram.com/moneymotionstudiosnyc" target="_blank" rel="noopener">@moneymotionstudiosnyc</a> (the studio's page) · TikTok: <a href="https://www.tiktok.com/@keyzfrostbeatz" target="_blank" rel="noopener">@keyzfrostbeatz</a></p></div>
+  <h2 class="section-title rv" id="portfolio">Our Portfolio</h2>
+  <div class="cards">
+    <a class="card rv" href="gallery.html" style="display:block"><h3>📸 The Studio</h3><p>See the room — the desk, the plaques, the booth →</p></a>
+    <a class="card rv" href="artists.html" style="display:block"><h3>🎤 Artists &amp; Talent</h3><p>Premium profiles — portraits, music, videos and socials →</p></a>
+    <a class="card rv" href="live.html" style="display:block"><h3>🔴 The Live Room</h3><p>Step into the live room and tap in →</p></a>
   </div>
 
-  <a class="card" href="gallery.html" style="display:block;text-align:center;margin-top:14px"><p><span>Photos</span>See the room — the desk, the plaques, the booth →</p></a>
+  <h2 class="section-title rv">The Studio</h2>
+  <div class="info-grid">
+    <div class="card rv"><p><span>Location</span>2 Saint Nicholas Ave, Brooklyn, NY 11237</p></div>
+    <div class="card rv"><p><span>Book by phone</span><a href="tel:+17189088466">718-908-8466</a> &nbsp;·&nbsp; <a href="tel:+17184156422">718-415-6422</a></p></div>
+    <div class="card rv"><p><span>The Engineer</span>KEYZ — recording &amp; mixing engineer for Money Motion Studios. Instagram: <a href="https://www.instagram.com/keyzondabeatz37" target="_blank" rel="noopener">@keyzondabeatz37</a></p></div>
+    <div class="card rv"><p><span>Follow</span>Studio Instagram: <a href="https://www.instagram.com/moneymotionstudiosnyc" target="_blank" rel="noopener">@moneymotionstudiosnyc</a> (the studio's page) · TikTok: <a href="https://www.tiktok.com/@keyzfrostbeatz" target="_blank" rel="noopener">@keyzfrostbeatz</a></p></div>
+  </div>
+
+  <h2 class="section-title rv" id="contact">Contact</h2>
+  <div class="cards">
+    <div class="card rv"><h3>📞 Book &amp; Business</h3><p><a href="tel:+17189088466">718-908-8466</a> · <a href="tel:+17184156422">718-415-6422</a><br><a href="mailto:littmobstudios@gmail.com">littmobstudios@gmail.com</a></p></div>
+    <div class="card rv"><h3>📲 Socials</h3><p>Instagram: <a href="https://www.instagram.com/keyzondabeatz37" target="_blank" rel="noopener">@keyzondabeatz37</a><br>TikTok: <a href="https://www.tiktok.com/@keyzfrostbeatz" target="_blank" rel="noopener">@keyzfrostbeatz</a><br>Facebook: <a href="https://www.facebook.com/KeyzOnDaBeats" target="_blank" rel="noopener">Keyz Ondabeatz</a></p></div>
+    <div class="card rv"><h3>📅 Booking Inquiries</h3><p>Service, date and project details — start with the booking form.</p><p><a class="btn btn-gold" href="book.html">BOOK A SESSION</a></p></div>
+  </div>
 </main>
 
 <footer>
@@ -94,6 +148,7 @@
 <script src="js/config.js"></script>
 <script src="js/store.js"></script>
 <script src="js/logo-data.js"></script>
+<script src="js/mme.js"></script>
 <script src="js/pwa.js"></script>
 <script>MMStore.showDemoNotice();</script>
 </body>

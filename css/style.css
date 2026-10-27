@@ -207,3 +207,142 @@ footer a { color: var(--gold); text-decoration: none; font-weight: 600; }
 .person-video-label { display: block; margin-top: 6px; color: var(--gold); font-weight: 700; }
 .person-gallery { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .person-gallery img { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; display: block; }
+
+/* ================= M.M.E. — THE MONEY MOTION EXPERIENCE ================= */
+/* Palette: deep black #050505 · platinum #E5E5E5 · gunmetal #24272B · chrome
+   white #FFFFFF · metallic red accent #A30016. Scoped to body.home so every
+   other page keeps its existing look and function. */
+body.home { background: #050505; }
+body.home .wrap { position: relative; z-index: 1; }
+
+/* floating nav over the video; glass panel after scrolling */
+body.home .site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  background: linear-gradient(180deg, rgba(5,5,5,.55), rgba(5,5,5,0));
+  border-bottom: 1px solid transparent;
+  transition: background .45s ease, border-color .45s ease;
+}
+body.home .site-header.scrolled {
+  background: rgba(8,8,10,.82);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(229,229,229,.18);
+}
+body.home .nav .links a { transition: color .25s, text-shadow .25s; }
+body.home .nav .links a:hover { color: #fff; text-shadow: 0 0 12px rgba(255,255,255,.65), 2px 0 0 rgba(163,0,22,.55); }
+.mme-booknow { margin-left: 10px; white-space: nowrap; }
+
+/* full-screen cinematic video header */
+.mme-hero {
+  position: relative; min-height: 100svh; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: #050505; isolation: isolate;
+}
+.mme-vids { position: absolute; inset: 0; z-index: 0; }
+.mme-vid {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  opacity: 0; transition: opacity 1.25s ease; background: #050505;
+}
+.mme-vid.on { opacity: 1; }
+/* poster mode (no video files yet / autoplay blocked / reduced motion):
+   animated cinematic shade + slow logo drift — never a blank frame. */
+.mme-hero.mme-poster .mme-vids {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 118%, rgba(163,0,22,.20), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgba(229,229,229,.13), transparent 60%),
+    linear-gradient(180deg, #050505, #0b0b0d 55%, #050505);
+  animation: mme-shade 14s ease-in-out infinite alternate;
+}
+@keyframes mme-shade { from { filter: brightness(.92); } to { filter: brightness(1.12); } }
+.mme-hero-shade {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(5,5,5,.62) 0%, rgba(5,5,5,.28) 34%, rgba(5,5,5,.42) 68%, #050505 100%);
+}
+.mme-hero-inner { position: relative; z-index: 2; text-align: center; padding: 110px 18px 70px; max-width: 880px; }
+.mme-logo {
+  width: min(560px, 86vw); height: auto; display: block; margin: 0 auto;
+  filter: drop-shadow(0 18px 44px rgba(0,0,0,.85));
+  animation: mme-logo-in 1.6s cubic-bezier(.16,.8,.24,1) both .15s, mme-sweep 7s ease-in-out infinite 2.2s;
+}
+@keyframes mme-logo-in { from { opacity: 0; transform: scale(1.06); filter: blur(10px) drop-shadow(0 18px 44px rgba(0,0,0,.85)); } to { opacity: 1; transform: scale(1); filter: blur(0) drop-shadow(0 18px 44px rgba(0,0,0,.85)); } }
+@keyframes mme-sweep { 0%, 100% { filter: brightness(1) drop-shadow(0 18px 44px rgba(0,0,0,.85)); } 50% { filter: brightness(1.13) drop-shadow(0 18px 44px rgba(0,0,0,.85)); } }
+.mme-h1 { font-size: clamp(30px, 6.4vw, 56px); margin: 18px 0 2px; letter-spacing: .045em; }
+.mme-tag { font-size: clamp(16px, 3.4vw, 24px); font-weight: 800; letter-spacing: .32em; color: #E5E5E5; margin: 8px 0 0; text-shadow: 0 2px 18px rgba(0,0,0,.8); }
+.mme-statement { color: #cfccc2; max-width: 640px; margin: 14px auto 4px; font-size: clamp(14px, 2.4vw, 17px); }
+.mme-cta { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+.mme-scroll { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 2; color: #E5E5E5; font-size: 26px; text-decoration: none; opacity: .75; animation: mme-bob 2.2s ease-in-out infinite; }
+@keyframes mme-bob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 7px); } }
+
+/* glass panels + chrome edges for the new sections */
+body.home .card {
+  background: linear-gradient(180deg, rgba(36,39,43,.72), rgba(16,16,18,.92));
+  border: 1px solid rgba(229,229,229,.14);
+  box-shadow: 0 12px 34px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+body.home .card:hover { transform: translateY(-4px); border-color: rgba(229,229,229,.32); box-shadow: 0 20px 44px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.1); }
+
+/* cinematic scroll reveals */
+.rv { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.16,.8,.24,1); }
+.rv.in { opacity: 1; transform: none; }
+
+/* ---- 8-second glitch intro ---- */
+#mme-intro {
+  position: fixed; inset: 0; z-index: 200; background: #050505;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  overflow: hidden; transition: opacity .6s ease;
+}
+#mme-intro.done { opacity: 0; pointer-events: none; }
+#mme-intro::before { /* static / interference */
+  content: ""; position: absolute; inset: -60px;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px);
+  animation: mme-static .38s steps(4) infinite; opacity: 0;
+}
+@keyframes mme-static { 0% { opacity: 0; transform: translateY(0); } 12% { opacity: .8; } 30% { opacity: .15; } 55% { opacity: .6; } 100% { opacity: 0; transform: translateY(14px); } }
+.mme-intro-scan {
+  position: absolute; left: 0; right: 0; height: 22vh; top: -22vh;
+  background: linear-gradient(180deg, transparent, rgba(229,229,229,.10), rgba(163,0,22,.10), transparent);
+  animation: mme-scan 2.6s linear infinite;
+}
+@keyframes mme-scan { to { transform: translateY(150vh); } }
+.mme-intro-logo { position: relative; width: min(520px, 84vw); animation: mme-assemble 8s linear both; }
+.mme-gl { width: 100%; height: auto; display: block; }
+.mme-gl.g-r, .mme-gl.g-b { position: absolute; inset: 0; mix-blend-mode: screen; }
+.mme-gl.g-r { filter: sepia(1) saturate(6) hue-rotate(-48deg); animation: mme-rgb-r 8s linear both; }
+.mme-gl.g-b { filter: sepia(1) saturate(5) hue-rotate(168deg); animation: mme-rgb-b 8s linear both; }
+@keyframes mme-rgb-r { 0%, 24% { opacity: 0; transform: translate(0); } 28% { opacity: .85; transform: translate(7px, -2px); } 36% { opacity: .5; transform: translate(-5px, 1px); } 44% { opacity: .8; transform: translate(4px, 0); } 52%, 100% { opacity: 0; transform: translate(0); } }
+@keyframes mme-rgb-b { 0%, 24% { opacity: 0; transform: translate(0); } 28% { opacity: .85; transform: translate(-7px, 2px); } 36% { opacity: .5; transform: translate(5px, -1px); } 44% { opacity: .8; transform: translate(-4px, 0); } 52%, 100% { opacity: 0; transform: translate(0); } }
+/* fragments assemble 0-6s (clip slices + shake), sharp at 6s, hold to 8s */
+@keyframes mme-assemble {
+  0%, 24% { opacity: 0; }
+  27% { opacity: 1; clip-path: inset(12% 0 58% 0); transform: translate(-9px, 3px) skewX(-4deg); }
+  33% { clip-path: inset(52% 0 8% 0); transform: translate(8px, -3px); }
+  40% { clip-path: inset(28% 0 34% 0); transform: translate(-6px, 1px) skewX(3deg); }
+  47% { clip-path: inset(4% 0 6% 0); transform: translate(4px, -1px); }
+  54% { clip-path: inset(0 0 0 0); transform: translate(-2px, 0); }
+  60%, 100% { opacity: 1; clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+.mme-intro-logo::after { /* the big light sweep as it sharpens */
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,.5) 50%, transparent 58%);
+  transform: translateX(-120%); animation: mme-big-sweep 8s linear both; mix-blend-mode: screen;
+}
+@keyframes mme-big-sweep { 0%, 56% { transform: translateX(-120%); } 72%, 100% { transform: translateX(120%); } }
+.mme-intro-title {
+  margin-top: 20px; font-weight: 900; letter-spacing: .3em; font-size: clamp(15px, 3.6vw, 26px);
+  background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent;
+  opacity: 0; animation: mme-title-in 8s linear both; text-align: center; padding: 0 12px;
+}
+@keyframes mme-title-in { 0%, 72% { opacity: 0; transform: translateY(10px); } 82%, 100% { opacity: 1; transform: none; } }
+#mme-skip {
+  position: absolute; right: 16px; bottom: 16px; z-index: 2;
+  background: rgba(20,20,22,.7); color: #E5E5E5; border: 1px solid rgba(229,229,229,.35);
+  padding: 8px 14px; border-radius: 999px; font-size: 12px; letter-spacing: .18em; cursor: pointer;
+}
+body.mme-intro-on { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mme-logo, .mme-scroll, .mme-hero.mme-poster .mme-vids { animation: none !important; }
+  .rv { opacity: 1; transform: none; transition: none; }
+  #mme-intro { display: none !important; }
+}
