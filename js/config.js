@@ -29,7 +29,7 @@ window.MM_CONFIG = {
 
   // The studio's rate card. Prices are whole dollars.
   SERVICES: [
-    { id: "studio5",  name: "Studio Time — 5 Hours",        price: 150, blurb: "Free mixdown included" },
+    { id: "studio5",  name: "Studio Time — 5 Hours",        price: 150, blurb: "Free ROUGH mixing included" },
     { id: "mixmaster", name: "Mix & Master Only",           price: 300, blurb: "Send your session, get a finished record" },
     { id: "full",     name: "Studio Time + Mix & Master",   price: 450, blurb: "5 hours in the booth plus full mix & master" }
   ],
