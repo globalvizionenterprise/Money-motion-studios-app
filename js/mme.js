@@ -1,70 +1,57 @@
-// M.M.E. — THE MONEY MOTION EXPERIENCE (homepage)
-// 1) Cinematic glitch intro (8s, skippable, once per session, reduced-motion safe)
-// 2) Dual-video crossfade header player — alternates the two header videos forever
-// 3) Floating nav turns to glass on scroll; cinematic scroll reveals
+// GLOBAL VIZION ENTERPRISE — homepage film system
+// 1) Cinematic opener: video 2 plays once per session (skippable, reduced-motion safe),
+//    then fades out into the page.
+// 2) Video 1 loops as the full-page background film behind the whole main page.
+// 3) Floating nav turns to glass on scroll; cinematic scroll reveals.
 //
-// === HEADER VIDEOS ============================================================
-// When the two original header videos are hosted, put their URLs here in order
-// (video 1 first, video 2 second). Empty = poster mode (logo + animated shade),
-// so the header is never blank.
-var MME_VIDEOS = [
-  "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/hero-1.mp4",
-  "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/hero-2.mp4"
-];
-var MME_POSTER = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/hero-poster.jpg";
+// === GV FILMS (hosted in the Money Motion Supabase public bucket "site-media") ===
+var GV_OPEN = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/gv-open.mp4";
+var GV_LOOP = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/gv-loop.mp4";
+var GV_POSTER = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/public/site-media/gv-poster.jpg";
 // =============================================================================
 
 (function () {
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- glitch intro ---------- */
+  /* ---------- full-page looping background film (video 1) ---------- */
+  var bg = document.getElementById("gv-bg");
+  if (bg) {
+    if (reduced) {
+      if (GV_POSTER) bg.poster = GV_POSTER;
+    } else {
+      bg.src = GV_LOOP;
+      if (GV_POSTER) bg.poster = GV_POSTER;
+      bg.muted = true; bg.loop = true; bg.playsInline = true;
+      var bp = bg.play(); if (bp && bp.catch) bp.catch(function () {});
+      bg.addEventListener("error", function () {
+        var w = document.querySelector(".gv-bgwrap");
+        if (w) w.style.display = "none";
+      }, true);
+    }
+  }
+
+  /* ---------- cinematic opener (video 2) ---------- */
   var intro = document.getElementById("mme-intro");
+  var openVid = document.getElementById("mme-open-vid");
   function killIntro() { if (intro) { intro.classList.add("done"); setTimeout(function () { intro.remove(); }, 650); } }
   if (intro) {
     var seen = false;
     try { seen = sessionStorage.getItem("mmeIntroSeen") === "1"; } catch (e) {}
-    if (reduced || seen) {
+    if (reduced || seen || !openVid) {
       intro.remove();
     } else {
       try { sessionStorage.setItem("mmeIntroSeen", "1"); } catch (e) {}
       document.body.classList.add("mme-intro-on");
+      openVid.src = GV_OPEN;
+      openVid.muted = true; openVid.playsInline = true;
+      var op = openVid.play(); if (op && op.catch) op.catch(function () {});
+      var done = function () { document.body.classList.remove("mme-intro-on"); killIntro(); };
+      openVid.addEventListener("ended", done);
+      openVid.addEventListener("error", done, true);
       var skip = document.getElementById("mme-skip");
-      if (skip) skip.addEventListener("click", function () { document.body.classList.remove("mme-intro-on"); killIntro(); });
-      intro.addEventListener("click", function () { document.body.classList.remove("mme-intro-on"); killIntro(); });
-      setTimeout(function () { document.body.classList.remove("mme-intro-on"); killIntro(); }, 8000);
-    }
-  }
-
-  /* ---------- dual-video crossfade player ---------- */
-  var hero = document.querySelector(".mme-hero");
-  var vids = Array.prototype.slice.call(document.querySelectorAll(".mme-vid"));
-  if (hero && vids.length === 2) {
-    if (!MME_VIDEOS.length || reduced) {
-      hero.classList.add("mme-poster");
-    } else {
-      var cur = 0, swapping = false;
-      vids.forEach(function (v, i) {
-        v.src = MME_VIDEOS[i % MME_VIDEOS.length];
-        if (MME_POSTER) v.poster = MME_POSTER;
-        v.muted = true; v.playsInline = true; v.preload = "auto";
-      });
-      function swap() {
-        if (swapping) return; swapping = true;
-        var next = vids[1 - cur], prev = vids[cur];
-        try { next.currentTime = 0; } catch (e) {}
-        var p = next.play(); if (p && p.catch) p.catch(function () {});
-        next.classList.add("on"); prev.classList.remove("on");
-        setTimeout(function () { prev.pause(); cur = 1 - cur; swapping = false; }, 1300);
-      }
-      vids.forEach(function (v) {
-        v.addEventListener("timeupdate", function () {
-          if (v === vids[cur] && v.duration && v.duration - v.currentTime < 1.6) swap();
-        });
-        v.addEventListener("ended", function () { if (v === vids[cur]) swap(); });
-        v.addEventListener("error", function () { hero.classList.add("mme-poster"); }, true);
-      });
-      vids[0].classList.add("on");
-      var start = vids[0].play(); if (start && start.catch) start.catch(function () { hero.classList.add("mme-poster"); });
+      if (skip) skip.addEventListener("click", function (ev) { ev.stopPropagation(); done(); });
+      intro.addEventListener("click", done);
+      setTimeout(done, 11000);
     }
   }
 

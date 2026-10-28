@@ -6,39 +6,40 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Money Motion">
+<meta name="apple-mobile-web-app-title" content="Global Vizion">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MONEY MOTION STUDIOS — Brooklyn Recording Studio</title>
-<meta name="description" content="MONEY MOTION STUDIOS, Brooklyn NY. Studio time $150/5 hrs, mix & master $300. KEYZ — Money Motion Engineer. Book: 718-908-8466.">
-<meta property="og:title" content="MONEY MOTION STUDIOS — Brooklyn Recording Studio">
+<title>GLOBAL VIZION ENTERPRISE — Home of Money Motion Studios, Brooklyn</title>
+<meta name="description" content="GLOBAL VIZION ENTERPRISE — head company. Home of MONEY MOTION STUDIOS (an affiliate), Brooklyn NY. Studio time $150/5 hrs, mix & master $300. KEYZ — Money Motion Engineer. Book: 718-908-8466.">
+<meta property="og:title" content="GLOBAL VIZION ENTERPRISE — Home of Money Motion Studios">
 <meta property="og:description" content="Studio time $150/5 hrs, free ROUGH mixing included. KEYZ — Money Motion Engineer. Book your session.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://moneymotionstudios.github.io/Money-motion-studios-app/">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"RecordingStudio","name":"MONEY MOTION STUDIOS","url":"https://moneymotionstudios.github.io/Money-motion-studios-app/","address":{"@type":"PostalAddress","streetAddress":"2 Saint Nicholas Ave","addressLocality":"Brooklyn","addressRegion":"NY","postalCode":"11237","addressCountry":"US"},"telephone":"718-908-8466","priceRange":"$150 - $300","description":"Brooklyn recording studio. Studio time $150 for 5 hours with free rough mixing, $50 booking fee, mix & master only $300. KEYZ — Money Motion Engineer."}
+{"@context":"https://schema.org","@type":"RecordingStudio","name":"MONEY MOTION STUDIOS","url":"https://moneymotionstudios.github.io/Money-motion-studios-app/","address":{"@type":"PostalAddress","streetAddress":"2 Saint Nicholas Ave","addressLocality":"Brooklyn","addressRegion":"NY","postalCode":"11237","addressCountry":"US"},"telephone":"718-908-8466","priceRange":"$150 - $300","parentOrganization":{"@type":"Organization","name":"GLOBAL VIZION ENTERPRISE"},"description":"Brooklyn recording studio. Studio time $150 for 5 hours with free rough mixing, $50 booking fee, mix & master only $300. KEYZ — Money Motion Engineer."}
 </script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="home">
 
-<!-- M.M.E. cinematic intro (8s, skippable, once per session) -->
+<!-- GLOBAL VIZION ENTERPRISE — full-page looping film (video 1) -->
+<div class="gv-bgwrap" aria-hidden="true">
+  <video id="gv-bg" muted loop playsinline preload="auto"></video>
+  <div class="gv-bgshade"></div>
+</div>
+
+<!-- GV cinematic opener (video 2, plays once per session, skippable) -->
 <div id="mme-intro" aria-hidden="true">
+  <video id="mme-open-vid" muted playsinline preload="auto" aria-hidden="true"></video>
   <div class="mme-intro-scan"></div>
-  <div class="mme-intro-logo">
-    <img class="mme-gl g-base" src="logo-cutout.svg" alt="">
-    <img class="mme-gl g-r" src="logo-cutout.svg" alt="">
-    <img class="mme-gl g-b" src="logo-cutout.svg" alt="">
-  </div>
-  <div class="mme-intro-title">MONEY MOTION STUDIOS</div>
   <button id="mme-skip" type="button">SKIP INTRO</button>
 </div>
 
 <header class="site-header">
   <nav class="nav">
-    <a class="brand" href="index.html"><img src="logo-cutout.svg" alt="Money Motion Studios logo"><span>MONEY MOTION</span></a>
+    <a class="brand" href="index.html"><img src="gv-mark.svg" alt="GLOBAL VIZION ENTERPRISE logo"><span>GLOBAL VIZION</span></a>
     <div class="links">
       <a href="index.html" class="active">Home</a>
       <a href="live.html">Live Room</a>
@@ -54,20 +55,19 @@
   </nav>
 </header>
 
-<!-- FULL-SCREEN CINEMATIC VIDEO HEADER -->
+<!-- HERO — the GV film loops behind the whole page -->
 <section class="mme-hero" id="top">
-  <div class="mme-vids">
-    <video class="mme-vid va" muted playsinline preload="auto" aria-hidden="true"></video>
-    <video class="mme-vid vb" muted playsinline preload="none" aria-hidden="true"></video>
-  </div>
-  <div class="mme-hero-shade"></div>
   <div class="mme-hero-inner">
-    <img class="mme-logo" src="logo-cutout.svg" alt="MONEY MOTION STUDIOS — chrome MM logo">
-    <h1 class="chrome mme-h1">MONEY MOTION STUDIOS</h1>
+    <img class="mme-logo" src="gv-logo.svg" alt="GLOBAL VIZION ENTERPRISE — chrome GV logo">
+    <h1 class="chrome mme-h1">GLOBAL VIZION ENTERPRISE</h1>
     <p class="mme-tag">WHERE VISION MEETS MOTION.</p>
     <p class="tagline">From the block to the booth.</p>
     <p class="mme-statement">Music. Film. Production. Creativity. Entertainment. Building a legacy through every sound, every frame, and every vision.</p>
-    <p class="engineer-line"><strong>KEYZ — Money Motion Engineer.</strong> Mixing engineer for MONEY MOTION STUDIOS, Brooklyn.</p>
+    <div class="aff-strip">
+      <img src="logo-cutout.svg" alt="MONEY MOTION STUDIOS — chrome MM logo">
+      <p><strong>MONEY MOTION STUDIOS</strong> — an affiliate of GLOBAL VIZION ENTERPRISE.<br>
+      <strong>KEYZ — Money Motion Engineer.</strong> Mixing engineer for MONEY MOTION STUDIOS, Brooklyn.</p>
+    </div>
     <div class="mme-cta">
       <a class="btn btn-gold" href="#portfolio">EXPLORE OUR WORK</a>
       <a class="btn btn-gold" href="book.html">BOOK A SESSION</a>
@@ -78,8 +78,8 @@
 </section>
 
 <main class="wrap">
-  <h2 class="section-title rv" id="about">About Money Motion Studios</h2>
-  <p class="muted rv">MONEY MOTION STUDIOS is a Brooklyn entertainment and production company built on creativity, perseverance and business excellence. From the block to the booth — recording, production and visual storytelling under one roof at 2 Saint Nicholas Ave, Brooklyn, NY.</p>
+  <h2 class="section-title rv" id="about">Money Motion Studios — An Affiliate of Global Vizion Enterprise</h2>
+  <p class="muted rv">MONEY MOTION STUDIOS is a Brooklyn entertainment and production company — an affiliate of GLOBAL VIZION ENTERPRISE — built on creativity, perseverance and business excellence. From the block to the booth — recording, production and visual storytelling under one roof at 2 Saint Nicholas Ave, Brooklyn, NY.</p>
 
   <h2 class="section-title rv" id="music">Music Production</h2>
   <div class="cards">
@@ -92,7 +92,7 @@
   <div class="cards">
     <div class="card rv"><h3>🎬 Music Videos &amp; Film</h3><p>Cinematic music videos, short films and trailers with a major-motion-picture look.</p></div>
     <div class="card rv"><h3>📺 Promotional Production</h3><p>Promos, posters, flyers and visual campaigns that make artists and businesses look like money.</p></div>
-    <div class="card rv"><h3>🌐 Websites &amp; Apps</h3><p>Through <a href="global.html">Global Vizion</a> — websites and apps built for artists, studios and businesses.</p></div>
+    <div class="card rv"><h3>🌐 Websites &amp; Apps</h3><p>By <a href="global.html">GLOBAL VIZION ENTERPRISE</a> — the head company builds websites and apps for artists, studios and businesses.</p></div>
   </div>
 
   <h2 class="section-title rv">Rates</h2>
@@ -140,7 +140,7 @@
 </main>
 
 <footer>
-  MONEY MOTION STUDIOS · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
+  MONEY MOTION STUDIOS — an affiliate of GLOBAL VIZION ENTERPRISE · 2 Saint Nicholas Ave, Brooklyn, NY 11237 · <a href="tel:+17189088466">718-908-8466</a> / <a href="tel:+17184156422">718-415-6422</a><br>
   From the block to the booth.
 </footer>
 
