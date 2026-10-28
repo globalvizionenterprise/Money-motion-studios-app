@@ -1,6 +1,6 @@
 // GLOBAL VIZION ENTERPRISE — homepage film system
-// 1) Cinematic opener: video 2 plays once per session (skippable, reduced-motion safe),
-//    then fades out into the page.
+// 1) Click-to-enter intro gate: video 2 plays full screen (whole film visible),
+//    and the visitor taps CLICK TO ENTER to fade into the page.
 // 2) Video 1 loops as the full-page background film behind the whole main page.
 // 3) Floating nav turns to glass on scroll; cinematic scroll reveals.
 //
@@ -30,29 +30,33 @@ var GV_POSTER = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/publ
     }
   }
 
-  /* ---------- cinematic opener (video 2) ---------- */
+  /* ---------- click-to-enter intro gate (video 2) ---------- */
   var intro = document.getElementById("mme-intro");
   var openVid = document.getElementById("mme-open-vid");
-  function killIntro() { if (intro) { intro.classList.add("done"); setTimeout(function () { intro.remove(); }, 650); } }
+  if (intro && reduced) { intro.remove(); intro = null; }
   if (intro) {
-    var seen = false;
-    try { seen = sessionStorage.getItem("mmeIntroSeen") === "1"; } catch (e) {}
-    if (reduced || seen || !openVid) {
-      intro.remove();
-    } else {
-      try { sessionStorage.setItem("mmeIntroSeen", "1"); } catch (e) {}
-      document.body.classList.add("mme-intro-on");
-      openVid.src = GV_OPEN;
-      openVid.muted = true; openVid.playsInline = true;
-      var op = openVid.play(); if (op && op.catch) op.catch(function () {});
-      var done = function () { document.body.classList.remove("mme-intro-on"); killIntro(); };
-      openVid.addEventListener("ended", done);
-      openVid.addEventListener("error", done, true);
-      var skip = document.getElementById("mme-skip");
-      if (skip) skip.addEventListener("click", function (ev) { ev.stopPropagation(); done(); });
-      intro.addEventListener("click", done);
-      setTimeout(done, 11000);
+    document.body.classList.add("mme-intro-on");
+    var entered = false;
+    function enter() {
+      if (entered) return; entered = true;
+      document.body.classList.remove("mme-intro-on");
+      intro.classList.add("done");
+      try { if (openVid) openVid.pause(); } catch (e) {}
+      setTimeout(function () { intro.remove(); }, 700);
     }
+    if (openVid) {
+      if (GV_POSTER) openVid.poster = GV_POSTER;
+      if (!reduced) {
+        openVid.src = GV_OPEN;
+        openVid.muted = true; openVid.playsInline = true;
+        var op = openVid.play(); if (op && op.catch) op.catch(function () {});
+      }
+    }
+    var enterBtn = document.getElementById("mme-skip");
+    if (enterBtn) enterBtn.addEventListener("click", function (ev) { ev.stopPropagation(); enter(); });
+    document.addEventListener("keydown", function (ev) {
+      if (!entered && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); enter(); }
+    });
   }
 
   /* ---------- floating nav -> glass on scroll ---------- */
