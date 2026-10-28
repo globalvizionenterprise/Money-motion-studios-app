@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://moneymotionstudios.github.io/Money-motion-studios-app/sitemap.xml
+Sitemap: https://globalvizionenterprise.github.io/Money-motion-studios-app/sitemap.xml
