@@ -84,7 +84,9 @@
   }
   listEl.innerHTML = items.map(function (it) {
     var meta = [it.producer, it.type, it.bpm ? it.bpm + " BPM" : "", it.key || ""].filter(Boolean).join(" · ");
-    var playBtn = it.audio ? '<button class="beat-play" type="button" aria-label="Play preview">\u25B6</button>' : '<span class="beat-note">\uD83C\uDFB5</span>';
+    var playBtn = it.audio ? '<button class="beat-play" type="button" aria-label="Play preview">\u25B6</button>'
+      : it.youtube ? '<button class="beat-play beat-yt" type="button" aria-label="Play video demo">\u25B6</button>'
+      : '<span class="beat-note">\uD83C\uDFB5</span>';
     var priceTxt = (it.from ? "from " : "") + "$" + it.price;
     var buyBtn = it.external
       ? '<a class="btn btn-gold btn-small" href="' + esc(it.external) + '" target="_blank" rel="noopener">' + (Number(it.price) === 0 ? "FREE — Get It" : "Shop — " + esc(priceTxt)) + "</a>"
@@ -94,6 +96,7 @@
       '<div class="beat-info"><div class="beat-title">' + esc(it.title) + '</div>' +
       '<div class="beat-meta">' + esc(meta) + '</div>' +
       '<div class="beat-progress"><i></i></div></div>' +
+      (it.youtube ? '<div class="beat-embed hidden"><iframe title="Video demo" loading="lazy" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>' : "") +
       '<span class="beat-time">0:00</span>' + buyBtn + "</div>";
   }).join("");
   listEl.querySelectorAll(".beat-row").forEach(function (row) {
@@ -101,6 +104,18 @@
     if (!item) return;
     var pb = row.querySelector(".beat-play");
     if (pb && item.audio) pb.addEventListener("click", function () { toggle(item, row); });
+    if (pb && item.youtube) pb.addEventListener("click", function () {
+      var box = row.querySelector(".beat-embed");
+      if (!box) return;
+      var frame = box.querySelector("iframe");
+      if (box.classList.contains("hidden")) {
+        if (!frame.src) frame.src = "https://www.youtube-nocookie.com/embed/" + item.youtube + "?autoplay=1&rel=0";
+        box.classList.remove("hidden"); pb.textContent = "\u23F8";
+      } else {
+        box.classList.add("hidden"); pb.textContent = "\u25B6";
+        if (frame) frame.src = "";
+      }
+    });
     var bb = row.querySelector(".beat-buy");
     if (bb) bb.addEventListener("click", function () { openBuy(item); });
   });

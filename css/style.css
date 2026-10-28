@@ -383,3 +383,7 @@ body.home h2[id] { scroll-margin-top: 120px; }
 .beat-chime { font-size: 13.5px; }
 .hidden { display: none !important; }
 .beat-note { flex: 0 0 auto; width: 44px; text-align: center; font-size: 19px; opacity: .55; }
+.beat-embed { margin: 10px 0 2px; }
+.beat-embed iframe { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 10px; display: block; }
+.beat-row { flex-wrap: wrap; }
+.beat-embed { flex: 1 1 100%; }
