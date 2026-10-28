@@ -22,6 +22,12 @@
         return '<a class="btn btn-gold person-link" href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.label) + "</a>";
       }).join("") + "</div>";
     }
+    var vids = (p.videos || []).filter(function (v) { return v && v.url; });
+    if (vids.length) {
+      h += '<div class="person-videos">' + vids.map(function (v) {
+        return '<a class="person-video-link" href="' + esc(v.url) + '" target="_blank" rel="noopener">' + esc(v.label || "\u25B6 Watch video") + "</a>";
+      }).join("") + "</div>";
+    }
     var soc = Object.keys(SOCIAL_LABELS).filter(function (k) { return p.socials && p.socials[k]; });
     if (soc.length) {
       h += '<div class="socials">' + soc.map(function (k) {

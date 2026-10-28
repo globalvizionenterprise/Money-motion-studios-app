@@ -363,3 +363,23 @@ body.mme-intro-on { overflow: hidden; }
   body.home .mme-hero-inner { padding-top: 150px; }
 }
 body.home h2[id] { scroll-margin-top: 120px; }
+
+/* ---- Producer video links + Beat Store ---- */
+.person-videos { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.person-video-link { display: block; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--text); text-decoration: none; font-size: 13.5px; font-weight: 600; background: var(--panel2); }
+.person-video-link:hover { color: var(--gold); }
+.beat-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 10px; }
+.beat-row.playing { box-shadow: 0 0 0 1px var(--gold), 0 8px 28px rgba(212,175,55,.15); }
+.beat-play { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold); background: #000; color: var(--gold); font-size: 17px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.beat-play-off { opacity: .35; cursor: default; }
+.beat-info { flex: 1 1 auto; min-width: 0; }
+.beat-title { font-weight: 800; font-size: 15.5px; }
+.beat-meta { color: var(--muted); font-size: 12.5px; margin: 1px 0 6px; }
+.beat-progress { height: 5px; border-radius: 3px; background: var(--panel2); overflow: hidden; }
+.beat-progress i { display: block; height: 100%; width: 0%; background: var(--gold); transition: width .2s linear; }
+.beat-time { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.beat-code { color: var(--gold); font-size: 17px; letter-spacing: .08em; }
+.beat-pay-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0; }
+.beat-chime { font-size: 13.5px; }
+.hidden { display: none !important; }
+.beat-note { flex: 0 0 auto; width: 44px; text-align: center; font-size: 19px; opacity: .55; }
