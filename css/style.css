@@ -217,7 +217,7 @@ body.home .wrap { position: relative; z-index: 1; }
 
 /* floating nav over the video; glass panel after scrolling */
 body.home .site-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  position: sticky; top: 0; z-index: 40;
   background: linear-gradient(180deg, rgba(5,5,5,.55), rgba(5,5,5,0));
   border-bottom: 1px solid transparent;
   transition: background .45s ease, border-color .45s ease;
@@ -417,16 +417,31 @@ body, a, button, .btn, input, select, textarea, label, summary { cursor: url("da
 
 .gv-globefilm { height: auto; aspect-ratio: 16 / 9; max-height: 74vh; }
 
-/* === Click-to-enter gate (2026-10-28) === */
+/* === Click-to-enter gate (2026-10-28; CHROME button 2026-10-30) === */
 #mme-skip {
   position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%);
-  padding: 16px 44px; font-size: clamp(16px, 2.6vw, 22px); font-weight: 700;
+  padding: 16px 44px; font-size: clamp(16px, 2.6vw, 22px); font-weight: 800;
   letter-spacing: .3em; text-indent: .3em; white-space: nowrap;
-  color: var(--gold, #c9a227); background: rgba(0,0,0,.55);
-  border: 2px solid var(--gold, #c9a227); border-radius: 999px;
-  animation: mme-enter-pulse 1.8s ease-in-out infinite;
+  color: #17191d;
+  background: linear-gradient(180deg, #ffffff 0%, #dfe3e8 28%, #9ba1ab 48%, #f4f6f8 52%, #b7bcc5 74%, #ffffff 100%);
+  border: 1px solid rgba(255,255,255,.95); border-radius: 999px;
+  box-shadow: 0 2px 16px rgba(255,255,255,.30), inset 0 1px 0 #ffffff, inset 0 -2px 6px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.55);
+  text-shadow: 0 1px 0 rgba(255,255,255,.85);
+  overflow: hidden; cursor: pointer;
+  animation: mme-enter-pulse-chrome 1.8s ease-in-out infinite;
 }
-@keyframes mme-enter-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,162,39,.45); }
-  50% { box-shadow: 0 0 26px 4px rgba(201,162,39,.45); }
+#mme-skip::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 42%; left: -70%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.9), transparent);
+  transform: skewX(-20deg);
+  animation: mme-chrome-shine 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes mme-chrome-shine {
+  0% { left: -70%; }
+  55%, 100% { left: 135%; }
+}
+@keyframes mme-enter-pulse-chrome {
+  0%, 100% { box-shadow: 0 2px 14px rgba(255,255,255,.22), inset 0 1px 0 #ffffff, inset 0 -2px 6px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.55); }
+  50% { box-shadow: 0 2px 32px rgba(255,255,255,.55), inset 0 1px 0 #ffffff, inset 0 -2px 6px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.55); }
 }

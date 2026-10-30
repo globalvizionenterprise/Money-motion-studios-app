@@ -49,6 +49,7 @@ var GV_POSTER = "https://mqucttxiwhdbsgzoitmd.supabase.co/storage/v1/object/publ
       if (!reduced) {
         openVid.src = GV_OPEN;
         openVid.muted = true; openVid.playsInline = true;
+        openVid.loop = true; // intro film loops until the visitor presses ENTER
         var op = openVid.play(); if (op && op.catch) op.catch(function () {});
       }
     }
